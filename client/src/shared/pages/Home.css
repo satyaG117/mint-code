@@ -1,0 +1,38 @@
+.home-container {
+    flex: 1;
+    background-color: #FA8BFF;
+    background-image: linear-gradient(45deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%);
+}
+
+.l1 {
+    font-size: 5rem;
+}
+
+.l2 {
+    font-size: 3rem;
+}
+
+.heading {
+    text-shadow: 2px 2px 25px rgba(0, 0, 0, 0.242);
+}
+
+
+.btn-grad {
+    background-image: linear-gradient(to right, #F09819 0%, #EDDE5D 51%, #F09819 100%);
+    margin: 2rem;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+}
+
+.btn-grad:hover {
+    background-position: right center;
+    /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}

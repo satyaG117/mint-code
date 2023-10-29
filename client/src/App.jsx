@@ -6,6 +6,7 @@ import './App.css'
 import Navbar from './shared/components/navigation/Navbar';
 import Login from './users/pages/Login'
 import Signup from './users/pages/Signup';
+import Home from './shared/pages/Home';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
+          <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
         </Routes>
