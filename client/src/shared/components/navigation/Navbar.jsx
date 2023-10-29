@@ -13,7 +13,7 @@ export default function Navbar() {
 
                     </div>
                     <div className="navbar-nav ms-auto">
-                        <NavLink className="nav-link" end to="/">Problems</NavLink>
+                        <NavLink className="nav-link" end to="/problems">Problems</NavLink>
                         <NavLink className="nav-link" end to="/login">Login</NavLink>
                     </div>
                 </div>
