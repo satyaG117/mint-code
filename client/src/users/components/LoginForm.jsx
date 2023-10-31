@@ -1,15 +1,11 @@
 import { useForm } from 'react-hook-form'
 import TextInput from '../../shared/components/inputs/TextInput';
 
-export default function LoginForm() {
+export default function LoginForm({onSubmit}) {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const handleLoginSubmit = (formData) => {
-        console.log(formData)
-    }
-
     return (
-        <form onSubmit={handleSubmit(handleLoginSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-3'>
                 <TextInput
                     name={"email"}
