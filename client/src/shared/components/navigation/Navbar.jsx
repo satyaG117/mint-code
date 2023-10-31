@@ -1,6 +1,10 @@
 import { NavLink } from "react-router-dom"
+import { useContext } from "react"
+
+import { AuthContext } from "../../contexts/AuthContext"
 
 export default function Navbar() {
+    const auth = useContext(AuthContext);
     return (
         <nav className="navbar navbar-expand-lg bg-black">
             <div className="container-fluid">
@@ -14,7 +18,13 @@ export default function Navbar() {
                     </div>
                     <div className="navbar-nav ms-auto">
                         <NavLink className="nav-link" end to="/problems">Problems</NavLink>
-                        <NavLink className="nav-link" end to="/login">Login</NavLink>
+                        {auth.isLoggedIn ?
+                            (<>
+                                <NavLink className="nav-link" end to="/profile">Profile</NavLink>
+                                <button onClick={auth.logout} className="btn btn-outline-warning">Logout</button>
+                            </>)
+                            :
+                            (<NavLink className="nav-link" end to="/login">Login</NavLink>)}
                     </div>
                 </div>
             </div>
