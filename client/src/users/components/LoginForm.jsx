@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form'
 import TextInput from '../../shared/components/inputs/TextInput';
+import LoadingIcon from '../../shared/components/ui-elements/LoadingIcon';
 
-export default function LoginForm({onSubmit}) {
+export default function LoginForm({ onSubmit , isLoading }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     return (
@@ -31,16 +32,23 @@ export default function LoginForm({onSubmit}) {
                     rules={{
                         required: 'Password is required',
                         minLength: {
-                            value: 6,
-                            message: 'Password should be atleast 6 characters long'
-                        }
+                            value: 8,
+                            message: 'Password should be atleast 8 characters long'
+                        }, maxLength: {
+                            value: 128,
+                            message: 'Password cannot exceed 128 characters'
+                        },
+                        pattern: {
+                            value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,128}$/,
+                            message: 'Password must have one uppercase, one lowercase alphabet, one digit and one special character'
+                        },
                     }}
                     error={errors.password}
                 />
             </div>
 
 
-            <button className=' my-3 btn btn-light'>Submit</button>
+            <button className=' my-3 btn btn-light' disabled={isLoading} >{isLoading ? <LoadingIcon /> : 'Submit'}</button>
         </form>
     )
 }
