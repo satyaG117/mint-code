@@ -1,32 +1,28 @@
 import { useForm } from 'react-hook-form';
-import TextInput from '../../shared/components/inputs/TextInput';
 
-export default function SignupForm() {
+import TextInput from '../../shared/components/inputs/TextInput';
+import LoadingIcon from '../../shared/components/ui-elements/LoadingIcon';
+
+export default function SignupForm({ onSubmit, isLoading }) {
     const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm();
 
     const validateRetypedPassword = (value) => {
         const password = getValues("password")
-        // console.info(value);
-        // console.info(password)
-
 
         if (value !== password) {
-            console.log("Not equal")
+            // console.log("Not equal")
             setError('retypedPass', {
                 type: 'manual',
                 message: 'Passwords do not match',
             });
-            console.log(errors)
+            // console.log(errors)
             return false;
         }
         return true;
     }
 
-    const handleSigninSubmit = (formData) => {
-        console.log(formData)
-    }
     return (
-        <form onSubmit={handleSubmit(handleSigninSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-3'>
                 <TextInput
                     name={"username"}
@@ -67,14 +63,19 @@ export default function SignupForm() {
                     register={register}
                     rules={{
                         required: 'Password is required',
+
                         minLength: {
-                            value: 6,
-                            message: 'Password should be atleast 6 characters long'
+                            value: 8,
+                            message: 'Password should be atleast 8 characters long'
                         },
                         maxLength: {
                             value: 128,
                             message: 'Password cannot exceed 128 characters'
-                        }
+                        },
+                        pattern: {
+                            value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,128}$/,
+                            message: 'Password must have one uppercase, one lowercase alphabet, one digit and one special character'
+                        },
                     }}
                     error={errors.password}
                 />
@@ -90,7 +91,7 @@ export default function SignupForm() {
                         validate: { validateRetypedPassword }
                     }}
                     error={errors.retypedPass}
-                    />
+                />
                 {/* workaround for error message not showing up */}
                 {errors.retypedPass && (<small className="error-msg text-warning">Retyped password should match password</small>)}
 
@@ -99,7 +100,7 @@ export default function SignupForm() {
 
 
 
-            <button className=' my-3 btn btn-light'>Submit</button>
+            <button className=' my-3 btn btn-light' disabled={isLoading} >{isLoading ? <LoadingIcon /> : 'Submit'}</button>
         </form>
     )
 }

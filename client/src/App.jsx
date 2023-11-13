@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+
 
 import './App.css'
 import Navbar from './shared/components/navigation/Navbar';
@@ -11,6 +13,7 @@ import { AuthContext } from './shared/contexts/AuthContext';
 import { useAuth } from './shared/hooks/useAuth';
 import ProblemSet from './problems/pages/ProblemSet';
 import AuthOnlyRoutes from './shared/components/protected-routes/AuthOnlyRoutes';
+import UnauthorizedOnlyRoutes from './shared/components/protected-routes/UnauthorizedOnlyRoutes'
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -26,14 +29,28 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
+          <Route path='/' element={<Home />} />
           <Route element={<AuthOnlyRoutes />}>
             <Route path='/problems' element={<ProblemSet />} />
           </Route>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
+          <Route element={<UnauthorizedOnlyRoutes />}>
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+          </Route>
         </Routes>
       </Router>
+      <ToastContainer
+        position="top-center"
+        autoClose={3500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </AuthContext.Provider>
   )
 }

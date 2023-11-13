@@ -34,11 +34,18 @@ main()
 
 app.use(express.json());
 
+// delay middleware for testing
+app.use((req, res, next) => {
+    setTimeout(() => {
+        next();
+    }, 1000); 
+})
+
 app.use('/api/users', userRoutes)
 
-app.get('/protected-route', isLoggedIn, (req,res,next)=>{
+app.get('/protected-route', isLoggedIn, (req, res, next) => {
     res.status(200).json({
-        message : 'Hello from server'
+        message: 'Hello from server'
     })
 })
 
