@@ -21,6 +21,12 @@ const userSchema = new Schema({
         maxLength: 128,
         match: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,128}$/
     },
+    role : {
+        type : String,
+        required : true,
+        enum : ['admin', 'user'],
+        default : 'user'
+    },
     createdAt: {
         type: 'Date',
         default: Date.now,

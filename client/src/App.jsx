@@ -14,6 +14,7 @@ import { useAuth } from './shared/hooks/useAuth';
 import ProblemSet from './problems/pages/ProblemSet';
 import AuthOnlyRoutes from './shared/components/protected-routes/AuthOnlyRoutes';
 import UnauthorizedOnlyRoutes from './shared/components/protected-routes/UnauthorizedOnlyRoutes'
+import AdminLogin from './users/pages/AdminLogin';
 
 function App() {
   const { userId, token, login, logout } = useAuth();
@@ -34,6 +35,7 @@ function App() {
             <Route path='/problems' element={<ProblemSet />} />
           </Route>
           <Route element={<UnauthorizedOnlyRoutes />}>
+            <Route path='/admin-login' element={<AdminLogin />}/>
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
           </Route>

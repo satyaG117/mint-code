@@ -2,6 +2,13 @@ const jwt = require('jsonwebtoken');
 
 const HttpError = require('../models/HttpError');
 
+module.exports.setUserRole = (role) =>{
+    return (req,res,next)=>{
+        req.userRole = role;
+        next();
+    }
+}
+
 module.exports.isLoggedIn = (req, res, next) =>{
     if(req.method === 'OPTIONS'){
         next();
