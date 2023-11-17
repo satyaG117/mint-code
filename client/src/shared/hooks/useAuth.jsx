@@ -4,12 +4,14 @@ import { useCallback, useEffect, useState } from "react"
 export const useAuth = ()=>{
     const [token , setToken] = useState(null);
     const [userId , setUserId] = useState(null);
+    const [role, setRole] = useState(null);
 
-    const login = useCallback((userId , token)=>{
+    const login = useCallback((userId , token, role="user")=>{
         setToken(token);
         setUserId(userId);
+        setRole(role);
 
-        localStorage.setItem('userData' , JSON.stringify({userId , token}));
+        localStorage.setItem('userData' , JSON.stringify({userId , token, role}));
     },[])
 
     const logout = useCallback(()=>{

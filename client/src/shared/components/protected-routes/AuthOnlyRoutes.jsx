@@ -10,6 +10,6 @@ export default function AuthOnlyRoutes() {
         )
     }
     return (
-        <Navigate to="/login" />
+        <Navigate to="/login" state={{from: window.location.pathname}}/>
     )
 }
