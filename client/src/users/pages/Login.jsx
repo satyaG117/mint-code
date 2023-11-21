@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useContext, useState } from 'react';
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,6 +13,7 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
+    const location = useLocation();
     const auth = useContext(AuthContext)
     const makeRequest = useFetch();
     const handleLoginSubmit = async (formData) => {
@@ -22,7 +23,7 @@ export default function Login() {
             console.log(responseData);
             auth.login(responseData.user.userId, responseData.token);
             
-            const nextURL = navigate.state?.from || '/problems';
+            const nextURL = location.state?.from?.pathname || '/problems';
             navigate(nextURL, {replace : true});
 
         } catch (err) {

@@ -15,15 +15,18 @@ import ProblemSet from './problems/pages/ProblemSet';
 import AuthOnlyRoutes from './shared/components/protected-routes/AuthOnlyRoutes';
 import UnauthorizedOnlyRoutes from './shared/components/protected-routes/UnauthorizedOnlyRoutes'
 import AdminLogin from './users/pages/AdminLogin';
+import Test from './shared/Test';
+import NewProblem from './problems/pages/NewProblem';
 
 function App() {
-  const { userId, token, login, logout } = useAuth();
+  const { userId, token, role, login, logout } = useAuth();
 
   return (
     <AuthContext.Provider value={{
       isLoggedIn: !!token,
       userId,
       token,
+      role,
       login,
       logout
     }}>
@@ -31,11 +34,18 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route element={<AuthOnlyRoutes />}>
+
+          <Route element={<AuthOnlyRoutes allowedRoles={["user", "admin"]} redirectTo={"/login"} />}>
+            <Route path='/test' element={<Test />} />
             <Route path='/problems' element={<ProblemSet />} />
           </Route>
+
+          <Route element={<AuthOnlyRoutes allowedRoles={["admin"]} redirectTo={"admin-login"} />}>
+            <Route path='/problems/new/' element={<NewProblem />} />
+          </Route>
+
           <Route element={<UnauthorizedOnlyRoutes />}>
-            <Route path='/admin-login' element={<AdminLogin />}/>
+            <Route path='/admin-login' element={<AdminLogin />} />
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
           </Route>

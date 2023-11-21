@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import LoginForm from "../components/LoginForm";
 import useFetch from "../../shared/hooks/useFetch";
@@ -12,6 +12,7 @@ export default function AdminLogin() {
     const makeRequest = useFetch();
     const auth = useContext(AuthContext)
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleAdminLoginSubmit = async (formData) => {
         setIsLoading(true);
@@ -20,7 +21,7 @@ export default function AdminLogin() {
             console.log(responseData);
             auth.login(responseData.user.userId, responseData.token, 'admin');
 
-            const nextURL = navigate.state?.from || '/problems';
+            const nextURL = location.state?.from?.pathname || '/problems';
             navigate(nextURL, {replace : true});
             
         } catch (err) {

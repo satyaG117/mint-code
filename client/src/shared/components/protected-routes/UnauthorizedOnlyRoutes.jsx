@@ -8,8 +8,9 @@ export default function AuthOnlyRoutes() {
         return (
             <Outlet />
         )
+    } else {
+        return (
+            <Navigate to="/problems" />
+        )
     }
-    return (
-        <Navigate to="/problems" />
-    )
 }
