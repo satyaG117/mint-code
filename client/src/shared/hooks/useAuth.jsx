@@ -17,7 +17,7 @@ export const useAuth = ()=>{
     const logout = useCallback(()=>{
         setToken(null);
         setUserId(null);
-
+        setRole(null)
         localStorage.removeItem('userData');
     },[]);
 
@@ -25,9 +25,9 @@ export const useAuth = ()=>{
     useEffect(()=>{
         const userData = JSON.parse(localStorage.getItem('userData'));
         if(userData && userData.token && userData.userId){
-            login(userData.userId , userData.token);
+            login(userData.userId , userData.token, userData.role);
         }
     },[login])
 
-    return {userId , token , login , logout}
+    return {userId , token ,role, login , logout}
 }

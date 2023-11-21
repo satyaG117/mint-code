@@ -1,15 +1,19 @@
 import { useContext } from "react"
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { AuthContext } from "../../contexts/AuthContext";
 
-export default function AuthOnlyRoutes() {
+export default function AuthOnlyRoutes({allowedRoles, redirectTo}) {
+    const location = useLocation();
     const auth = useContext(AuthContext);
-    if (auth.isLoggedIn) {
+    console.log(auth);
+    
+    if (auth.isLoggedIn && allowedRoles.includes(auth.role)) {
         return (
             <Outlet />
         )
+    } else {
+        return (
+            <Navigate to={redirectTo} state={{ from: location }} replace />
+        )
     }
-    return (
-        <Navigate to="/login" state={{from: window.location.pathname}}/>
-    )
 }

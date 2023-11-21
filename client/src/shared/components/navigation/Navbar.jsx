@@ -18,13 +18,20 @@ export default function Navbar() {
                     </div>
                     <div className="navbar-nav ms-auto">
                         <NavLink className="nav-link" end to="/problems">Problems</NavLink>
+                        <NavLink className="nav-link" end to="/test">test</NavLink>
                         {auth.isLoggedIn ?
                             (<>
+                                {auth.role === 'admin' && (
+                                    <NavLink className="nav-link" end to="/problems/new">New Problem</NavLink>
+                                )}
                                 <NavLink className="nav-link" end to="/profile">Profile</NavLink>
                                 <button onClick={auth.logout} className="btn btn-outline-warning">Logout</button>
                             </>)
                             :
-                            (<NavLink className="nav-link" end to="/login">Login</NavLink>)}
+                            (<>
+                                <NavLink className="nav-link" end to="/login">Login</NavLink>
+                                <NavLink className="nav-link" end to="/admin-login">Admin Login</NavLink>
+                            </>)}
                     </div>
                 </div>
             </div>
