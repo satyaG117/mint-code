@@ -5,7 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 export default function AuthOnlyRoutes({allowedRoles, redirectTo}) {
     const location = useLocation();
     const auth = useContext(AuthContext);
-    console.log(auth);
+    console.log('Auth only : ',auth);
     
     if (auth.isLoggedIn && allowedRoles.includes(auth.role)) {
         return (
