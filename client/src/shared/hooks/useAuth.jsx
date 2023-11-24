@@ -1,33 +1,21 @@
 import { useCallback, useEffect, useState } from "react"
 
+const PREFIX_KEY = 'mintcode__';
 
-export const useAuth = ()=>{
-    const [token , setToken] = useState(null);
-    const [userId , setUserId] = useState(null);
-    const [role, setRole] = useState(null);
+export const useAuth = () => {
+    const [user, setUser] = useState(() => {
+        return JSON.parse(localStorage.getItem(PREFIX_KEY + 'user'))
+    })
 
-    const login = useCallback((userId , token, role="user")=>{
-        setToken(token);
-        setUserId(userId);
-        setRole(role);
+    const login = useCallback((userId, token, role = "user") => {
+        setUser({ isLoggedIn : true, userId, token, role });
+        localStorage.setItem(PREFIX_KEY + 'user', JSON.stringify({ userId, token, role }));
+    }, [])
 
-        localStorage.setItem('userData' , JSON.stringify({userId , token, role}));
-    },[])
+    const logout = useCallback(() => {
+        setUser(null);
+        localStorage.removeItem(PREFIX_KEY + 'user');
+    }, []);
 
-    const logout = useCallback(()=>{
-        setToken(null);
-        setUserId(null);
-        setRole(null)
-        localStorage.removeItem('userData');
-    },[]);
-
-    // auto login
-    useEffect(()=>{
-        const userData = JSON.parse(localStorage.getItem('userData'));
-        if(userData && userData.token && userData.userId){
-            login(userData.userId , userData.token, userData.role);
-        }
-    },[login])
-
-    return {userId , token ,role, login , logout}
+    return { ...user, login, logout }
 }
