@@ -9,6 +9,10 @@ module.exports.setUserRole = (role) =>{
     }
 }
 
+// module.exports.getUserRole = (req, res,next)=>{
+//     req.userData.role
+// }
+
 module.exports.isLoggedIn = (req, res, next) =>{
     if(req.method === 'OPTIONS'){
         next();
@@ -16,7 +20,8 @@ module.exports.isLoggedIn = (req, res, next) =>{
 
     try{
         // auth header doesn't exist
-        if(!req.header.authorization){
+        
+        if(!req.headers.authorization){
             throw new Error("Authorization header absent")
         }
         // Bearer <token>
@@ -34,5 +39,16 @@ module.exports.isLoggedIn = (req, res, next) =>{
     }catch(err){
         console.log(err);
         return next(new HttpError(401, "Token verification failed"))
+    }
+}
+
+module.exports.isAdmin = (req,res,next)=>{
+    try{
+        if(req.userData?.role != 'admin'){
+            return next(new HttpError(401, "Unauthorized to perform this action"));
+        }
+        next();
+    }catch(err){
+        next(new HttpError(500, "Server error"));
     }
 }

@@ -38,7 +38,7 @@ export default function Signup() {
   }
 
   return (
-    <div className='form-bg'>
+    <div className='auth-form-container'>
       <div className="shadow p-3 mt-5 col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-10 offset-1 form-container bg-primary-subtle">
         <h3 className='mb-3'>Signup</h3>
         <SignupForm onSubmit={handleSignupSubmit} isLoading={isLoading} />

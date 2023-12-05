@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose')
 
 const userRoutes = require('./routes/user-routes');
+const problemRoutes = require('./routes/problem-routes')
 const { isLoggedIn } = require('./middlewares/auth');
 
 const app = express();
@@ -41,13 +42,15 @@ app.use((req, res, next) => {
     }, 1000); 
 })
 
-app.use('/api/users', userRoutes)
+app.use('/api/users', userRoutes);
 
-app.get('/protected-route', isLoggedIn, (req, res, next) => {
-    res.status(200).json({
-        message: 'Hello from server'
-    })
-})
+app.use('/api/problems',problemRoutes)
+
+// app.get('/protected-route', isLoggedIn, (req, res, next) => {
+//     res.status(200).json({
+//         message: 'Hello from server'
+//     })
+// })
 
 app.use((err, req, res, next) => {
     if (req.headersSent) {

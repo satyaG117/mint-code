@@ -1,6 +1,6 @@
 const usernameRegex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
 const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,128}$/
-
+const numberRegex = /^\d*\.?\d+$/
 
 module.exports.checkEmptyString = (value, helpers) => {
     if (value.trim() === '') {
@@ -16,6 +16,14 @@ module.exports.validateUsername = (value, helpers) => {
         return helpers.error("string.pattern.base");
     }
 
+    return value;
+}
+
+module.exports.validateNumericStrings = (value, helpers) => {
+    if (!numberRegex.test(value)){
+        return helpers.error("string.pattern.base");
+    }
+    
     return value;
 }
 
