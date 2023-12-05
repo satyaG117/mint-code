@@ -17,6 +17,7 @@ import UnauthorizedOnlyRoutes from './shared/components/protected-routes/Unautho
 import AdminLogin from './users/pages/AdminLogin';
 import Test from './shared/Test';
 import NewProblem from './problems/pages/NewProblem';
+import Problem from './problems/pages/Problem';
 
 function App() {
   const { userId, token, role, login, logout } = useAuth();
@@ -38,6 +39,7 @@ function App() {
           <Route element={<AuthOnlyRoutes allowedRoles={["user", "admin"]} redirectTo={"/login"} />}>
             <Route path='/test' element={<Test />} />
             <Route path='/problems' element={<ProblemSet />} />
+            <Route path='/problems/:problemId' element={<Problem />} />
           </Route>
 
           <Route element={<AuthOnlyRoutes allowedRoles={["admin"]} redirectTo={"admin-login"} />}>

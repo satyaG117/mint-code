@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-const {checkEmptyString , validateUsername , validatePassword} = require('./custom-validations');
+const {checkEmptyString , validateUsername , validatePassword, validateNumericStrings} = require('./custom-validations');
 
 const loginSchema = Joi.object().keys({
     email : Joi.string().required().email(),
@@ -11,4 +11,15 @@ const signupSchema = loginSchema.keys({
     username : Joi.string().required().custom(validateUsername , 'username-validation')
 })
 
-module.exports = {loginSchema , signupSchema}
+const problemSchema = Joi.object().keys({
+    private : Joi.boolean().required(),
+    title : Joi.string().required().custom(checkEmptyString,'Empty string check'),
+    description : Joi.string(),
+    time_limit : Joi.string().custom(validateNumericStrings, 'Numeric strings check'),
+    memory_limit : Joi.string().custom(validateNumericStrings, 'Numeric strings check'),
+    difficulty : Joi.string().required().valid('easy','medium','hard')
+})
+
+
+
+module.exports = {loginSchema , signupSchema, problemSchema}
