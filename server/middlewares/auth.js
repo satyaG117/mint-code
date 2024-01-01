@@ -2,31 +2,49 @@ const jwt = require('jsonwebtoken');
 
 const HttpError = require('../models/HttpError');
 
-module.exports.setUserRole = (role) =>{
-    return (req,res,next)=>{
+module.exports.setUserRole = (role) => {
+    return (req, res, next) => {
         req.userRole = role;
         next();
     }
 }
 
-// module.exports.getUserRole = (req, res,next)=>{
-//     req.userData.role
-// }
+// used to check the role of a user, if not logged in then role stays null, no error is thrown
+module.exports.getUserRole = (req, res, next) => {
+    req.userData = {}
+    req.userData.role = null;
 
-module.exports.isLoggedIn = (req, res, next) =>{
-    if(req.method === 'OPTIONS'){
+    try {
+        if (req.headers?.authorization) {
+            const token = req.headers.authorization.split(' ')[1];
+            if (token) {
+                const payload = jwt.verify(token, process.env.JWT_KEY);
+                console.log("Payload : ", payload);
+                // attach payload to the req object
+                req.userData = payload;
+            }
+        }
+
+    } catch (err) {
+        console.log(err);
+    }
+    next();
+}
+
+module.exports.isLoggedIn = (req, res, next) => {
+    if (req.method === 'OPTIONS') {
         next();
     }
 
-    try{
+    try {
         // auth header doesn't exist
-        
-        if(!req.headers.authorization){
+
+        if (!req.headers.authorization) {
             throw new Error("Authorization header absent")
         }
         // Bearer <token>
         const token = req.headers.authorization.split(' ')[1];
-        if(!token){
+        if (!token) {
             throw new Error("Token absent")
         }
 
@@ -36,19 +54,20 @@ module.exports.isLoggedIn = (req, res, next) =>{
         req.userData = payload;
         return next();
 
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return next(new HttpError(401, "Token verification failed"))
     }
 }
 
-module.exports.isAdmin = (req,res,next)=>{
-    try{
-        if(req.userData?.role != 'admin'){
-            return next(new HttpError(401, "Unauthorized to perform this action"));
+module.exports.isAdmin = (req, res, next) => {
+    try {
+        // if logged in and admin then proceed
+        if(req.userData && req.userData.role === 'admin'){
+            return next()
         }
-        next();
-    }catch(err){
+        return next(new HttpError(401, "Unauthorized to perform this action"));
+    } catch (err) {
         next(new HttpError(500, "Server error"));
     }
 }

@@ -4,21 +4,22 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProblemForm from "../components/ProblemForm";
 import './ProblemForm.css'
 import useFetch from '../../shared/hooks/useFetch';
-import { useAuth } from '../../shared/hooks/useAuth';
+// import { useAuth } from '../../shared/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import LoadingIcon from '../../shared/components/ui-elements/LoadingIcon';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../shared/contexts/AuthContext';
 
 
 export default function NewProblem() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setisSubmitting] = useState(false);
   const makeRequest = useFetch();
-  const auth = useAuth();
+  const auth = useContext(AuthContext)
   const navigate = useNavigate();
 
   const handleProblemSubmit = async (formData) => {
+    console.log(formData);
     try {
-      setIsLoading(true);
+      setisSubmitting(true);
       const responseData = await makeRequest('http://localhost:8000/api/problems', 'POST', formData, {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${auth.token}`
@@ -39,19 +40,20 @@ export default function NewProblem() {
       });
 
     } finally {
-      setIsLoading(false);
+      setisSubmitting(false);
     }
   }
   return (
     <>
-      {isLoading && (<LoadingIcon asOverlay={true} />)}
-      <div className="problem-form-container">
-        <div className="shadow p-3 mt-5 col-lg-8 offset-lg-2 col-10 offset-1 form-container bg-primary-subtle">
+      <div className="problem-form-container container-fluid">
+        <div className="shadow p-3 mt-5 mb-2 col-lg-8 offset-lg-2 col-10 offset-1 bg-primary-subtle">
           <h3 className='mb-3'>Add a new problem</h3>
-          <ProblemForm onSubmit={handleProblemSubmit} />
+          <ProblemForm onSubmit={handleProblemSubmit} isLoading={isSubmitting}/>
+          
         </div>
 
       </div>
+        {/* <ProblemForm onSubmit={handleProblemSubmit} /> */}
     </>
   )
 }

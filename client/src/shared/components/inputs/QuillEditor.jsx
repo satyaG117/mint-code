@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import './QuillEditor.css'
 
-export default function QuillEditor({ handleEditorChange, height, placeholder }) {
+export default function QuillEditor({ handleEditorChange, height, placeholder, value }) {
     const quillRef = useRef();
     const modules = {
         toolbar: [
@@ -22,6 +22,7 @@ export default function QuillEditor({ handleEditorChange, height, placeholder })
             ref={quillRef}
             modules={modules}
             formats={formats}
+            value={value}
             // bounds={document.querySelector(editorContainer)}
             theme="snow"
             onChange={handleEditorChange}

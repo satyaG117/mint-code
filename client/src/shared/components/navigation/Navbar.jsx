@@ -25,7 +25,7 @@ export default function Navbar() {
                                     <NavLink className="nav-link" end to="/problems/new">New Problem</NavLink>
                                 )}
                                 <NavLink className="nav-link" end to="/profile">Profile</NavLink>
-                                <button onClick={auth.logout} className="btn btn-outline-warning">Logout</button>
+                                <button onClick={auth.logout} className="btn nav-link">Logout</button>
                             </>)
                             :
                             (<>
