@@ -4,7 +4,10 @@ const useFetch = () => {
     const activeRequests = useRef([]);
 
     const makeRequest = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
-        body = JSON.stringify(body);
+        if (body != null) {
+            body = JSON.stringify(body);
+
+        }
         // create a abort controller for the request
         const httpAbortCtrl = new AbortController();
         // push the controller for the current request
@@ -20,22 +23,22 @@ const useFetch = () => {
             activeRequests.current = activeRequests.current.filter(reqCtrl => reqCtrl !== httpAbortCtrl)
 
             // manually catch and throw error
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error(responseData.message);
             }
 
             return responseData
-        }catch(err){
+        } catch (err) {
             throw new Error(err.message);
         }
     }, [])
 
-    useEffect(()=>{
-        return () =>{
+    useEffect(() => {
+        return () => {
             // abort all requests on dismount
             activeRequests.current.forEach(reqCtrl => reqCtrl.abort())
         }
-    },[])
+    }, [])
 
     return makeRequest;
 }

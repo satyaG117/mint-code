@@ -18,55 +18,60 @@ import AdminLogin from './users/pages/AdminLogin';
 import Test from './shared/Test';
 import NewProblem from './problems/pages/NewProblem';
 import Problem from './problems/pages/Problem';
+import EditProblem from './problems/pages/EditProblem';
 
 function App() {
   const { userId, token, role, login, logout } = useAuth();
 
   return (
-    <AuthContext.Provider value={{
-      isLoggedIn: !!token,
-      userId,
-      token,
-      role,
-      login,
-      logout
-    }}>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Home />} />
+    <div id='main-container'>
+      <AuthContext.Provider value={{
+        isLoggedIn: !!token,
+        userId,
+        token,
+        role,
+        login,
+        logout
+      }}>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />} />
 
-          <Route element={<AuthOnlyRoutes allowedRoles={["user", "admin"]} redirectTo={"/login"} />}>
-            <Route path='/test' element={<Test />} />
-            <Route path='/problems' element={<ProblemSet />} />
-            <Route path='/problems/:problemId' element={<Problem />} />
-          </Route>
+            <Route element={<AuthOnlyRoutes allowedRoles={["user", "admin"]} redirectTo={"/login"} />}>
+              <Route path='/test' element={<Test />} />
+              <Route path='/problems' element={<ProblemSet />} />
+              <Route path='/problems/:problemId' element={<Problem />} />
+            </Route>
 
-          <Route element={<AuthOnlyRoutes allowedRoles={["admin"]} redirectTo={"admin-login"} />}>
-            <Route path='/problems/new/' element={<NewProblem />} />
-          </Route>
+            <Route element={<AuthOnlyRoutes allowedRoles={["admin"]} redirectTo={"admin-login"} />}>
+              <Route path='/problems/new/' element={<NewProblem />} />
+              <Route path='/problems/:problemId/edit' element={<EditProblem />} />
+            </Route>
 
-          <Route element={<UnauthorizedOnlyRoutes />}>
-            <Route path='/admin-login' element={<AdminLogin />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-          </Route>
-        </Routes>
-      </Router>
-      <ToastContainer
-        position="top-center"
-        autoClose={3500}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-    </AuthContext.Provider>
+            <Route element={<UnauthorizedOnlyRoutes />}>
+              <Route path='/admin-login' element={<AdminLogin />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<Signup />} />
+            </Route>
+          </Routes>
+        </Router>
+        <ToastContainer
+          position="top-center"
+          autoClose={3500}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+      </AuthContext.Provider>
+    </div>
   )
+
 }
 
 export default App
