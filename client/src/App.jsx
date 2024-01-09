@@ -19,6 +19,7 @@ import Test from './shared/Test';
 import NewProblem from './problems/pages/NewProblem';
 import Problem from './problems/pages/Problem';
 import EditProblem from './problems/pages/EditProblem';
+import EditTestcases from './problems/pages/EditTestcases';
 
 function App() {
   const { userId, token, role, login, logout } = useAuth();
@@ -47,6 +48,7 @@ function App() {
             <Route element={<AuthOnlyRoutes allowedRoles={["admin"]} redirectTo={"admin-login"} />}>
               <Route path='/problems/new/' element={<NewProblem />} />
               <Route path='/problems/:problemId/edit' element={<EditProblem />} />
+              <Route path='/problems/:problemId/testcases/edit' element={<EditTestcases />} />
             </Route>
 
             <Route element={<UnauthorizedOnlyRoutes />}>
@@ -58,7 +60,7 @@ function App() {
         </Router>
         <ToastContainer
           position="top-center"
-          autoClose={3500}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop
           closeOnClick

@@ -1,0 +1,4 @@
+.testcases-container {
+    flex: 1;
+    background: linear-gradient(90deg, #9ebd13 0%, #008552 100%);
+}

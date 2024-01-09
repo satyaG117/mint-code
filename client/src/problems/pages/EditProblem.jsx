@@ -42,6 +42,7 @@ export default function EditProblem() {
     }
 
     const handleProblemSubmit = async (formData) => {
+        console.log(formData)
         setIsLoading(true);
         try {
             let responseData = await makeRequest(`http://localhost:8000/api/problems/${problemId}`, 'PUT', formData, {
