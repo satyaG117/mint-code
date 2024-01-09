@@ -23,23 +23,11 @@ const problemSchema = new Schema({
     memory_limit: {
         type: Number
     },
-    private : {
+    public : {
         type : Boolean,
         required : true,
-        default : true
+        default : false
     },
-    testcases: [
-        {
-            input: {
-                type: String,
-                required: true
-            },
-            expected_output: {
-                type: String,
-                required: true
-            }
-        }
-    ],
     author : {
         type: Schema.Types.ObjectId, 
         ref: 'User'

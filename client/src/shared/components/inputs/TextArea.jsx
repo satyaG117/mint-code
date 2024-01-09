@@ -1,7 +1,7 @@
 
 import './TextArea.css'
 
-export default function TextArea({placeholder, name, rules, rows, cols, register, error}) {
+export default function TextArea({placeholder = "", name, rules, rows, cols, register, error}) {
     return (
         <>
             <textarea

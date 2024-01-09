@@ -47,6 +47,7 @@ export default function ProblemForm({ onSubmit, problem, isLoading }) {
         setValue('time_limit', problem.time_limit.toString());
         setValue('memory_limit', problem.memory_limit.toString());
         setValue('difficulty',problem.difficulty)
+        setValue('public',problem.public)
     }, [problem])
 
     return (
@@ -54,8 +55,8 @@ export default function ProblemForm({ onSubmit, problem, isLoading }) {
         {isLoading && (<LoadingIcon asOverlay={true}/>)}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-check form-switch mb-3">
-                    <label className="form-check-label" htmlFor="private">Set question to private ?</label>
-                    <CheckBox register={register} name="private" defaultChecked={problem?.private ? problem.private : true} />
+                    <label className="form-check-label" htmlFor="public">Set question to public ?</label>
+                    <CheckBox register={register} name="public"  />
                     <br />
                     <small className='text-warning'>NOTE : A question while being private won't be listed and the submission won't be counted. Use for testing or troubleshooting</small>
                     <br />

@@ -18,7 +18,7 @@ export default function Navbar() {
                     </div>
                     <div className="navbar-nav ms-auto">
                         <NavLink className="nav-link" end to="/problems">Problems</NavLink>
-                        <NavLink className="nav-link" end to="/test">test</NavLink>
+                        {/* <NavLink className="nav-link" end to="/test">test</NavLink> */}
                         {auth.isLoggedIn ?
                             (<>
                                 {auth.role === 'admin' && (
