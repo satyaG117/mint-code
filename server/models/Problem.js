@@ -30,8 +30,22 @@ const problemSchema = new Schema({
     },
     author : {
         type: Schema.Types.ObjectId, 
-        ref: 'User'
+        ref: 'User',
+        required : true
     },
+    language_support : [
+        {
+            name : {
+                type : String,
+                required : true
+            },
+            id : {
+                type : Schema.Types.ObjectId,
+                ref : 'LanguageSupport',
+                required : true
+            }
+        }
+    ],
     createdAt: {
         type: 'Date',
         default: Date.now,

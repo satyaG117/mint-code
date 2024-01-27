@@ -42,16 +42,7 @@ export default function EditTestcases() {
                 setTestcases(responseData.testcases);
             } catch (err) {
                 console.log(err);
-                toast.error(err.message, {
-                    position: "top-center",
-                    autoClose: 3500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
+                toast.error(err.message);
             } finally {
                 setIsLoading(false);
             }

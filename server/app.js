@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const userRoutes = require('./routes/user-routes');
 const problemRoutes = require('./routes/problem-routes')
 const testcaseRoutes = require('./routes/testcase-routes')
+const languageRoutes = require('./routes/language-routes')
 
 const app = express();
 
@@ -43,10 +44,9 @@ app.use((req, res, next) => {
 })
 
 app.use('/api/users', userRoutes);
-
 app.use('/api/problems',problemRoutes);
-
 app.use('/api/testcases',testcaseRoutes)
+app.use('/api/languages',languageRoutes)
 
 // app.get('/protected-route', isLoggedIn, (req, res, next) => {
 //     res.status(200).json({

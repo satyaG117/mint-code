@@ -14,7 +14,7 @@ input[type=number]:focus,
 }
 
 #main-container {
-  min-height: 100vh;
+  height: 100vh;
   /* min-width: 100vw; */
   display: flex;
   flex-direction: column;

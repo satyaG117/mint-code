@@ -26,6 +26,11 @@ const testcaseSchema = Joi.object().keys({
     expected_output : Joi.string().required()
 })
 
+const languageSupportSchema = Joi.object().keys({
+    imports: Joi.string().allow(''),
+    user_code : Joi.string().required(),
+    driver_code : Joi.string().required()
+})
 
 
-module.exports = {loginSchema , signupSchema, problemSchema, testcaseSchema}
+module.exports = {loginSchema , signupSchema, problemSchema, testcaseSchema, languageSupportSchema}
