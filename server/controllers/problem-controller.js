@@ -106,7 +106,7 @@ module.exports.getProblem = async (req, res, next) => {
                 ])
             }
         } else { // if no testcases are needed
-            console.log("here")
+            console.log(req.params.problemId)
             problem = await Problem.aggregate([
                 {
                     $match: {

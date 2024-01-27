@@ -20,6 +20,8 @@ import NewProblem from './problems/pages/NewProblem';
 import Problem from './problems/pages/Problem';
 import EditProblem from './problems/pages/EditProblem';
 import EditTestcases from './problems/pages/EditTestcases';
+import LanguageSupport from './problems/pages/LanguageSupport';
+import LanguageSupportForm from './problems/pages/LanguageSupportForm';
 
 function App() {
   const { userId, token, role, login, logout } = useAuth();
@@ -49,6 +51,8 @@ function App() {
               <Route path='/problems/new/' element={<NewProblem />} />
               <Route path='/problems/:problemId/edit' element={<EditProblem />} />
               <Route path='/problems/:problemId/testcases/edit' element={<EditTestcases />} />
+              <Route path='/problems/:problemId/languages' element={<LanguageSupport />} />
+              <Route path='/problems/:problemId/languages/edit' element={<LanguageSupportForm/>} />
             </Route>
 
             <Route element={<UnauthorizedOnlyRoutes />}>

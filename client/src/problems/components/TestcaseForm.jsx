@@ -36,13 +36,15 @@ export default function TestcaseForm({ testcase, onSubmit, isLoading }) {
                 <TextArea
                     name={"expected_output"}
                     register={register}
-                    rules={{}}
+                    rules={{
+                        required: 'Expected output is required',
+                    }}
                     rows={5}
                     cols={50}
                     error={errors.expected_output}
                 />
             </div>
-            <button className="btn btn-success" disabled={isLoading}>{isLoading ? (<LoadingIcon />)  : 'Submit'}</button>
+            <button className="btn btn-success" disabled={isLoading}>{isLoading ? (<LoadingIcon />) : 'Submit'}</button>
         </form>
 
     )
