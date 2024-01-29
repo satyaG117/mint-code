@@ -23,7 +23,7 @@ export default function LanguageSupport() {
     const fetchProblem = async () => {
       setIsLoading(true)
       try {
-        let responseData = await makeRequest(`http://localhost:8000/api/problems/${problemId}`, 'GET', null, {
+        let responseData = await makeRequest(`http://localhost:8000/api/languages/problem/${problemId}`, 'GET', null, {
           'Authorization': `Bearer ${auth.token}`
         })
         setProblem(responseData);
@@ -65,10 +65,12 @@ export default function LanguageSupport() {
           </>
         )}
         <div className="my-3">
-          {problem?.language_support.length > 0 && <h3>Supported languages</h3>}
-          {problem?.language_support?.map((lang, index) => {
-            <Link to={`/problems/${problemId}/languages/${lang._id}`} key={lang._id}>{lang.name}</Link>
+          {problem?.supported_languages.length > 0 && <h3>Supported languages</h3>}
+          {problem?.supported_languages?.map((lang, index) => {
+            return(<p className="pt-1">{lang.name}</p>)
           })}
+
+          <hr/>
 
           <Link className="btn btn-light" to={`/problems/${problemId}/languages/edit`}>Edit language support</Link>
         </div>

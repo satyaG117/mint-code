@@ -1,6 +1,50 @@
+const mongoose = require('mongoose');
+
 const HttpError = require('../models/HttpError')
 const Language = require('../models/Language')
 const LanguageSupport = require('../models/LanguageSupport');
+const Problem = require('../models/Problem')
+
+
+module.exports.getSupportedLanguagesByProblemId = async (req, res, next) => {
+    try {
+        const problem = await Problem.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(req.params.problemId)
+                }
+            },
+            {
+                $lookup: {
+                    'from': 'languagesupports',
+                    'localField': '_id',
+                    'foreignField': 'problem',
+                    'as': 'language_supports'
+                }
+            }, {
+                $lookup: {
+                    'from': 'languages',
+                    'localField': 'language_supports.language',
+                    'foreignField': '_id',
+                    'as': 'supported_languages'
+                }
+            }, {
+                $project: {
+                    'language_supports': 0
+                }
+            }
+        ])
+
+        if(problem.length == 0){
+            return next(new HttpError(404, "Problem not found"));
+        }
+
+        res.status(200).json(problem[0]);
+    } catch (err) {
+        console.log(err);
+        next(new HttpError(500, 'Server error'))
+    }
+}
 
 module.exports.getSupportedLanguage = async (req, res, next) => {
     const { problemId, languageId } = req.params;
@@ -72,9 +116,9 @@ module.exports.editLanguageSupport = async (req, res, next) => {
 module.exports.deleteLanguageSupport = async (req, res, next) => {
     const { problemId, languageId } = req.params;
     try {
-        let targetLanguageSupport = await LanguageSupport.findOne({problem : problemId, language : languageId}).populate('problem');
+        let targetLanguageSupport = await LanguageSupport.findOne({ problem: problemId, language: languageId }).populate('problem');
 
-        if(!targetLanguageSupport){
+        if (!targetLanguageSupport) {
             return next(new HttpError(404, "Not found"));
         }
 
@@ -82,7 +126,7 @@ module.exports.deleteLanguageSupport = async (req, res, next) => {
             return next(new HttpError(401, "Unauthorized to perform this action"));
         }
 
-        targetLanguageSupport = await LanguageSupport.findOneAndDelete({problem : problemId, language : languageId});
+        targetLanguageSupport = await LanguageSupport.findOneAndDelete({ problem: problemId, language: languageId });
 
         res.status(200).json(targetLanguageSupport);
     } catch (err) {
