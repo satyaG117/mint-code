@@ -152,7 +152,27 @@ module.exports.updateProblem = async (req, res, next) => {
             message: 'Problem updated successfully'
         })
     } catch (err) {
-        console.log(err);
         next(new HttpError(500, 'Unknow error encountered, failed to update'));
+    }
+}
+
+module.exports.deleteProblemById = async(req,res, next)=>{
+    try{
+        const problem = await Problem.findById(req.params.problemId);
+        if(!problem){
+            return next(new HttpError(404, "Problem not found"));
+        }
+
+        if(problem.author.toString() != req.userData.userId){
+            return next(new HttpError(401, "Unauthorized to perform this action"));
+        }
+
+        // proceed with deletetion
+        const targetProblem = await Problem.findByIdAndDelete(req.params.problemId);
+
+        res.status(200).json(targetProblem);
+    }catch(err){
+        console.log(err);
+        next(new HttpError(500, "Server error"))
     }
 }
