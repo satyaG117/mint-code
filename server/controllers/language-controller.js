@@ -49,7 +49,7 @@ module.exports.getSupportedLanguagesByProblemId = async (req, res, next) => {
 module.exports.getSupportedLanguage = async (req, res, next) => {
     const { problemId, languageId } = req.params;
     try {
-        const languageSupport = await LanguageSupport.findOne({ problem: problemId, language: languageId });
+        const languageSupport = await LanguageSupport.findOne({ problem: problemId, language: languageId }).populate('problem');
         if (!languageSupport) {
             return next(new HttpError(404, "Resource not found"));
         }
@@ -62,9 +62,14 @@ module.exports.getSupportedLanguage = async (req, res, next) => {
 }
 
 module.exports.getAllLanguages = async (req, res, next) => {
+    const {problemId} = req.query;
+    let problem;
     try {
         const languages = await Language.find({});
-        res.status(200).json(languages);
+        if(problemId){
+            problem = await Problem.findById(problemId);
+        }
+        res.status(200).json({languages, problem});
     } catch (err) {
         console.log(err);
     }

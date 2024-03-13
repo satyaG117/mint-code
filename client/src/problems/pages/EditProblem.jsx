@@ -43,6 +43,8 @@ export default function EditProblem() {
 
     const handleProblemSubmit = async (formData) => {
         console.log(formData)
+        formData.time_limit = parseFloat(formData.time_limit);
+        formData.memory_limit = parseFloat(formData.memory_limit);
         setIsLoading(true);
         try {
             let responseData = await makeRequest(`http://localhost:8000/api/problems/${problemId}`, 'PUT', formData, {

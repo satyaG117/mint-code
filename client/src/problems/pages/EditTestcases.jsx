@@ -36,7 +36,8 @@ export default function EditTestcases() {
                     description: responseData.description,
                     difficulty: responseData.difficulty,
                     time_limit: responseData.time_limit,
-                    memory_limit: responseData.memory_limit
+                    memory_limit: responseData.memory_limit,
+                    testcaseDelimiter : responseData.testcaseDelimiter
                 });
 
                 setTestcases(responseData.testcases);
@@ -155,6 +156,7 @@ export default function EditTestcases() {
                     {problem && (
                         <>
                             <h3 className='mb-3'>{problem.title}</h3>
+                            <span>Testcase delimiter : </span><strong>{problem.testcaseDelimiter}</strong>
                             <hr />
 
                             {isDescriptionVisible && (<div dangerouslySetInnerHTML={{ __html: problem.description }} />)}

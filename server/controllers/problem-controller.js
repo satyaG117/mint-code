@@ -13,8 +13,8 @@ module.exports.addNewProblem = async (req, res, next) => {
             return next(new HttpError(409, 'Problem with this title already exists'));
         }
 
-        req.body.time_limit = parseFloat(req.body.time_limit)
-        req.body.memory_limit = parseFloat(req.body.memory_limit)
+        // req.body.time_limit = parseFloat(req.body.time_limit)
+        // req.body.memory_limit = parseFloat(req.body.memory_limit)
         // set to private
         req.body.public = false;
 

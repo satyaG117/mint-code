@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const Testcase = require('./Testcase')
 const LanguageSupport = require('./LanguageSupport');
 const HttpError = require('./HttpError');
+const {nanoid} = require('nanoid')
 
 const problemSchema = new Schema({
     title: {
@@ -32,6 +33,11 @@ const problemSchema = new Schema({
         required : true,
         default : false
     },
+    testcaseDelimiter : {
+        type : String,
+        required : true,
+        default : nanoid()
+    },
     author : {
         type: Schema.Types.ObjectId, 
         ref: 'User',
@@ -46,6 +52,11 @@ const problemSchema = new Schema({
         type: 'Date',
         default: Date.now
     }
+})
+
+problemSchema.pre('save', function(next){
+    this.lastEditedAt = new Date();
+    next();
 })
 
 problemSchema.pre('findOneAndDelete',async function(next){
