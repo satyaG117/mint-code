@@ -29,6 +29,7 @@ export default function LanguageSupportForm() {
   const [error, setError] = useState(null);
   const [isClearButtonDisabled, setIsClearButtonDisabled] = useState(false)
   const [langSupportId, setLangSupportId] = useState(null);
+  const [testcaseDelimiter, setTestcaseDelimiter] = useState('');
 
   const makeRequest = useFetch();
   const auth = useContext(AuthContext)
@@ -37,16 +38,18 @@ export default function LanguageSupportForm() {
     const fetchLanguages = async () => {
       try {
         setIsLoading(true);
-        const responseData = await makeRequest('http://localhost:8000/api/languages');
-        setLanguages(responseData.map((lang, index) => {
+        const responseData = await makeRequest(`http://localhost:8000/api/languages?problemId=${problemId}`);
+        console.log(responseData);
+        setTestcaseDelimiter(responseData.problem.testcaseDelimiter)
+        setLanguages(responseData.languages.map((lang, index) => {
           return {
             text: lang.name,
             value: `${lang._id}+${lang.editor_code}`
           }
 
         }))
-        setCurrentLanguageId(responseData[0]._id);
-        setCurrentLanguage(responseData[0].editor_code);
+        setCurrentLanguageId(responseData.languages[0]._id);
+        setCurrentLanguage(responseData.languages[0].editor_code);
 
       } catch (err) {
         console.log(err);
@@ -72,6 +75,7 @@ export default function LanguageSupportForm() {
       try {
         setIsLoading(true);
         const responseData = await makeRequest(`http://localhost:8000/api/languages/problem/${problemId}/language/${currentLanguageId}`);
+        console.log(responseData);
         setImports(responseData.imports)
         setUserCode(responseData.user_code)
         setDriverCode(responseData.driver_code)
@@ -100,8 +104,8 @@ export default function LanguageSupportForm() {
 
   const deleteLanguageSupport = async () => {
     setIsLoading(true);
-    try{
-      const responseData = await makeRequest(`http://localhost:8000/api/languages/problem/${problemId}/language/${currentLanguageId}`, 'DELETE', null , {
+    try {
+      const responseData = await makeRequest(`http://localhost:8000/api/languages/problem/${problemId}/language/${currentLanguageId}`, 'DELETE', null, {
         'Authorization': `Bearer ${auth.token}`,
         'Content-Type': 'application/json'
       });
@@ -110,9 +114,9 @@ export default function LanguageSupportForm() {
       setDriverCode('');
       toast.info('Deleted successfully')
       setIsClearButtonDisabled(true);
-    }catch(err){
+    } catch (err) {
 
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   }
@@ -174,10 +178,18 @@ export default function LanguageSupportForm() {
                 <div className='col-md-1 col-2'>
                   <button className='btn btn-danger' onClick={deleteLanguageSupport} disabled={isClearButtonDisabled}>Clear</button>
                 </div>
+                {testcaseDelimiter && 
+                (<div className='col-md-3 col-4 p-1 border border-warning'>
+                  Testcase delimiter :&nbsp;  
+                  {testcaseDelimiter}
+                </div>)}
               </>)}
 
           </div>
+
+
         </div>
+
         {/* editors goes here */}
         <div className='editor-section border'>
           <Split

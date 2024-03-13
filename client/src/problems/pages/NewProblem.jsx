@@ -18,6 +18,8 @@ export default function NewProblem() {
 
   const handleProblemSubmit = async (formData) => {
     console.log(formData);
+    formData.time_limit = parseFloat(formData.time_limit);
+    formData.memory_limit = parseFloat(formData.memory_limit);
     try {
       setisSubmitting(true);
       const responseData = await makeRequest('http://localhost:8000/api/problems', 'POST', formData, {
@@ -48,12 +50,12 @@ export default function NewProblem() {
       <div className="problem-form-container container-fluid">
         <div className="shadow p-3 mt-5 mb-2 col-lg-8 offset-lg-2 col-10 offset-1 bg-primary-subtle">
           <h3 className='mb-3'>Add a new problem</h3>
-          <ProblemForm onSubmit={handleProblemSubmit} isLoading={isSubmitting}/>
-          
+          <ProblemForm onSubmit={handleProblemSubmit} isLoading={isSubmitting} />
+
         </div>
 
       </div>
-        {/* <ProblemForm onSubmit={handleProblemSubmit} /> */}
+      {/* <ProblemForm onSubmit={handleProblemSubmit} /> */}
     </>
   )
 }

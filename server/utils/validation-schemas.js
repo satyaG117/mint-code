@@ -15,8 +15,8 @@ const problemSchema = Joi.object().keys({
     public : Joi.boolean().required(),
     title : Joi.string().required().custom(checkEmptyString,'Empty string check'),
     description : Joi.string(),
-    time_limit : Joi.string().custom(validateNumericStrings, 'Numeric strings check'),
-    memory_limit : Joi.string().custom(validateNumericStrings, 'Numeric strings check'),
+    time_limit : Joi.number().required().min(0.1),
+    memory_limit : Joi.number().required().min(2048),
     difficulty : Joi.string().required().valid('easy','medium','hard')
 })
 

@@ -25,7 +25,7 @@ const difficultyOptions = [
 
 export default function ProblemForm({ onSubmit, problem, isLoading }) {
 
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, getValues ,formState: { errors },setError } = useForm();
     // const [defaultOption , setDefaultOption] = useState('');
     const [editorValue, setEditorValue] = useState('')
 
@@ -46,17 +46,17 @@ export default function ProblemForm({ onSubmit, problem, isLoading }) {
         setEditorValue(problem.description)
         setValue('time_limit', problem.time_limit.toString());
         setValue('memory_limit', problem.memory_limit.toString());
-        setValue('difficulty',problem.difficulty)
-        setValue('public',problem.public)
+        setValue('difficulty', problem.difficulty)
+        setValue('public', problem.public)
     }, [problem])
 
     return (
         <>
-        {isLoading && (<LoadingIcon asOverlay={true}/>)}
+            {isLoading && (<LoadingIcon asOverlay={true} />)}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-check form-switch mb-3">
                     <label className="form-check-label" htmlFor="public">Set question to public ?</label>
-                    <CheckBox register={register} name="public"  />
+                    <CheckBox register={register} name="public" />
                     <br />
                     <small className='text-warning'>NOTE : A question while being private won't be listed and the submission won't be counted. Use for testing or troubleshooting</small>
                     <br />
@@ -103,13 +103,28 @@ export default function ProblemForm({ onSubmit, problem, isLoading }) {
                             type={"text"}
                             register={register}
                             rules={{
+                                required: 'Time limit is required',
                                 pattern: {
-                                    value: /^\d*\.?\d+$/,
-                                    message: 'Only numbers are allowed'
+                                    value: /^\d*\.?\d+$/g,
+                                    message: 'Only number are allowed'
+                                },
+                                validate : (value) => {
+                                    // const value = getValues('memeory_limit');
+                                    console.log(value);
+                                    if (parseFloat(value) < 0.1){
+                                        console.log("Error")
+                                        setError('time_limit', { type: 'manual', message: 'Memory limit cannot be less than 2048 KBs' });
+                                        return false;
+                                    }else{
+                                        // setError('memory_limit', null)
+                                        return true;
+                                    }
+
                                 }
                             }}
-                            error={errors.time_limit}
+                            // error={errors.time_limit}
                         />
+                        {errors.time_limit &&(<small className='text-warning'>Time limit needs to be a number greater than equal to 0.1</small>)}
                     </div>
                     <div className='col'>
                         <label className='form-label'>Memory limit (in kbs)</label>
@@ -119,13 +134,28 @@ export default function ProblemForm({ onSubmit, problem, isLoading }) {
                             type={"text"}
                             register={register}
                             rules={{
+                                required: 'Memory is required',
                                 pattern: {
-                                    value: /^\d*\.?\d+$/,
-                                    message: 'Only numbers are allowed'
+                                    value: /^\d*\.?\d+$/g,
+                                    message: 'Only number >= 2048 are allowed'
+                                },
+                                validate : (value) => {
+                                    // const value = getValues('memeory_limit');
+                                    console.log(value);
+                                    if (parseFloat(value) < 2048){
+                                        console.log("Error")
+                                        setError('memory_limit', { type: 'manual', message: 'Memory limit cannot be less than 2048 KBs' });
+                                        return false;
+                                    }else{
+                                        // setError('memory_limit', null)
+                                        return true;
+                                    }
+
                                 }
                             }}
-                            error={errors.memory_limit}
+                            // error={errors.memory_limit}
                         />
+                        {errors.memory_limit &&(<small className='text-warning'>Memory limit needs to be a number greater than equal to </small>)}
                     </div>
                     <div className='col'>
                         <label className='form-label'>Difficulty</label>
