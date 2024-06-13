@@ -48,11 +48,6 @@ app.use('/api/problems',problemRoutes);
 app.use('/api/testcases',testcaseRoutes)
 app.use('/api/languages',languageRoutes)
 
-// app.get('/protected-route', isLoggedIn, (req, res, next) => {
-//     res.status(200).json({
-//         message: 'Hello from server'
-//     })
-// })
 
 app.use((err, req, res, next) => {
     if (req.headersSent) {
